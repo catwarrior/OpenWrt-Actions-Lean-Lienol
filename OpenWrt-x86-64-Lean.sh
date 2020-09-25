@@ -81,27 +81,22 @@ touch ./.config
 # 无论你想要对固件进行怎样的定制, 都需要且只需要修改 EOF 回环内的内容.
 # 
 
-# 编译x64固件:
+# 编译rasp3b固件:
 cat >> .config <<EOF
-CONFIG_TARGET_x86=y
-CONFIG_TARGET_x86_64=y
-CONFIG_TARGET_x86_64_Generic=y
+CONFIG_TARGET_bcm27xx=y
+CONFIG_TARGET_bcm27xx_bcm2710=y
+CONFIG_TARGET_bcm27xx_bcm2710_DEVICE_rpi-3=y
 EOF
 
 # 设置固件大小:
 cat >> .config <<EOF
-CONFIG_TARGET_KERNEL_PARTSIZE=16
-CONFIG_TARGET_ROOTFS_PARTSIZE=160
+CONFIG_TARGET_KERNEL_PARTSIZE=50
+CONFIG_TARGET_ROOTFS_PARTSIZE=500
 EOF
 
 # 固件压缩:
 cat >> .config <<EOF
 CONFIG_TARGET_IMAGES_GZIP=y
-EOF
-
-# 编译UEFI固件:
-cat >> .config <<EOF
-CONFIG_EFI_IMAGES=y
 EOF
 
 # IPv6支持:
