@@ -3,8 +3,8 @@ name: OpenWrt-x86-64-Lean
 
 on:
 # 定时触发(每天早5点)
-  schedule:
-    - cron: 0 21 * * *
+#  schedule:
+#    - cron: 0 21 * * *
 
 # release触发
   release:
@@ -29,6 +29,7 @@ on:
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
+  SSH_ACTIONS: true
   DIY_SH: OpenWrt-x86-64-Lean.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
@@ -73,12 +74,15 @@ jobs:
         chmod +x $DIY_SH
         cd openwrt
         ../$DIY_SH
-        make defconfig
+
+    - name: SSH connection to Actions
+      uses: catwarrior/debugger-action@master
+      if: env.SSH_ACTIONS == 'true' || contains(github.event.action, 'ssh')
 
     - name: 下载软件包
       id: package
       run: |
-        cd openwrt && make download -j8
+        cd openwrt && make defconfig && make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
 
