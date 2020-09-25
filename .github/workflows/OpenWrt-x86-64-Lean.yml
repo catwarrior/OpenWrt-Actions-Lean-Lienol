@@ -90,7 +90,7 @@ jobs:
       id: compile
       run: |
         cd openwrt
-        cp .config bin/.config
+        mkdir bin && cp .config bin
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 V=s
         echo "::set-output name=status::success"
